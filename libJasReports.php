@@ -57,7 +57,7 @@
     }
     // Clean the input variable
     $userName=DB_escape_string($host, true);
-    $query="SELECT SUM(copies*pages) as total FROM jobs_log WHERE host='$host'";
+    $query="SELECT SUM(pages) as total FROM jobs_log WHERE host='$host'";
     if ($result=DB_query($query)){ //Assignment !
       $row=mysql_fetch_row($result);
       mysql_free_result($result);
@@ -87,7 +87,7 @@
     }
     // Clean the input variable
     $userName=DB_escape_string($userName, true);
-    $query="SELECT SUM(copies*pages) as total FROM jobs_log WHERE user=$userName";
+    $query="SELECT SUM(pages) as total FROM jobs_log WHERE user=$userName";
     if ($result=DB_query($query)){ //Assignment !
       $row=mysql_fetch_row($result);
       mysql_free_result($result);
@@ -119,7 +119,7 @@
     // Clean the input variables
     $userName=DB_escape_string($userName, true);
     $printerName=DB_escape_string($printerName, true);
-    $query="SELECT SUM(copies*pages) as total FROM jobs_log WHERE user=$userName AND printer=$printerName";
+    $query="SELECT SUM(pages) as total FROM jobs_log WHERE user=$userName AND printer=$printerName";
     if($result=DB_query($query)){ //Assignment !
       $row=mysql_fetch_row($result);
       mysql_free_result($result);
@@ -149,7 +149,7 @@
     }
     // Clean the input variable
     $printerName=DB_escape_string($printerName, true);
-    $query="SELECT SUM(copies*pages) as total FROM jobs_log WHERE printer=$printerName";
+    $query="SELECT SUM(pages) as total FROM jobs_log WHERE printer=$printerName";
     if ($result=DB_query($query)){ //Assignment !
       $row=mysql_fetch_row($result);
       mysql_free_result($result);
@@ -180,7 +180,7 @@
     }
     // Clean the input variable
     $serverName=DB_escape_string($serverName, true);
-    $query="SELECT SUM(copies*pages) as total FROM jobs_log WHERE server=$serverName";
+    $query="SELECT SUM(pages) as total FROM jobs_log WHERE server=$serverName";
     if ($result=DB_query($query)){ //Assignment !
       $row=mysql_fetch_row($result);
       mysql_free_result($result);
@@ -215,7 +215,7 @@
     $userName=DB_escape_string($userName, true);
     $days=DB_escape_string($days, true);
 
-    $query="SELECT date,title,server, printer,copies,pages FROM jobs_log ";
+    $query="SELECT date,title, host, server, printer,copies,pages FROM jobs_log ";
     $query.="WHERE DATE_SUB(CURDATE(),INTERVAL $days DAY) <= date AND user=$userName ";
 
     if (!empty($printerName)){
@@ -230,16 +230,19 @@
 
       $tableULJ=new TBL_table();
       $tableULJ->setCaption("Últimas impressões de $userName");
-      $tableULJ->setColumns(array('Data', 'Título', 'Servidor', 'Impressora', 'Cópias','Páginas'));
+      $tableULJ->setColumns(array('Data', 'Título', 'IP', 'Servidor', 'Impressora', 'Cópias','Páginas'));
 
       global $jas_printerStatsPage;
       global $jas_serverStatsPage;
+			global $jas_hostStatsPage;
 
       while ($row=mysql_fetch_assoc($result)){
         if (isset($jas_printerStatsPage))
           $row['printer']="<a href=\"".$jas_printerStatsPage.$row['printer']."\">".$row['printer']."</a>";
         if (isset($jas_serverStatsPage))
           $row['server']="<a href=\"".$jas_serverStatsPage.$row['server']."\">".$row['server']."</a>";
+				if (isset($jas_hostStatsPage))
+          $row['host']="<a href=\"".$jas_hostStatsPage.$row['host']."\">".$row['host']."</a>";
         $tableULJ->addRow($row);
       }
 
@@ -264,7 +267,7 @@
       return false;
     }
     // Clean the input variables and prepare query
-    $userName=DB_escape_string($userName, true);
+    $userName=DB_escape_string($host, true);
     $days=DB_escape_string($days, true);
 
     $query="SELECT date, user, title, server, printer, copies, pages FROM jobs_log ";
@@ -282,7 +285,7 @@
 
       $tableULJ=new TBL_table();
       $tableULJ->setCaption("Últimas impressões de $host");
-      $tableULJ->setColumns(array('Data', 'Usuário', 'Título', 'Servidor', 'Impressora', 'Cópias','Páginas'));
+      $tableULJ->setColumns(array('Data', 'Usuário', 'Título', 'Servidor', 'Impressora', 'Cópias','Total Páginas'));
 
       global $jas_printerStatsPage;
       global $jas_serverStatsPage;
@@ -321,7 +324,7 @@
     $printerName=DB_escape_string($printerName, true);
     $days=DB_escape_string($days, true);
 
-    $query="SELECT date,title,server, user,copies,pages FROM jobs_log ";
+    $query="SELECT date,title,server, user, host,copies,pages FROM jobs_log ";
     $query.="WHERE DATE_SUB(CURDATE(),INTERVAL $days DAY) <= date AND printer=$printerName ";
     $query.="ORDER BY DATE DESC";
 
@@ -330,16 +333,19 @@
 
       $tablePLJ=new TBL_table();
       $tablePLJ->setCaption("Últimas impressões de $printerName");
-      $tablePLJ->setColumns(array('Data', 'Título', 'Servidor', 'Usuário', 'Cópias','Páginas'));
+      $tablePLJ->setColumns(array('Data', 'Título', 'Servidor', 'Usuário', 'IP', 'Cópias','Total Páginas'));
 
       global $jas_userStatsPage;
       global $jas_serverStatsPage;
+			global $jas_hostStatsPage;
 
       while ($row=mysql_fetch_assoc($result)){
         if (isset($jas_userStatsPage))
           $row['user']="<a href=\"".$jas_userStatsPage.$row['user']."\">".$row['user']."</a>";
         if (isset($jas_serverStatsPage))
           $row['server']="<a href=\"".$jas_serverStatsPage.$row['server']."\">".$row['server']."</a>";
+				if (isset($jas_hostStatsPage))
+          $row['host']="<a href=\"".$jas_hostStatsPage.$row['host']."\">".$row['host']."</a>";
         $tablePLJ->addRow($row);
       }
 
@@ -369,7 +375,7 @@
     $serverName=DB_escape_string($serverName, true);
     $days=DB_escape_string($days, true);
 
-    $query="SELECT date,title,printer,user,(copies*pages) as total FROM jobs_log ";
+    $query="SELECT date, title, printer, user, host, copies, pages as total FROM jobs_log ";
     $query.="WHERE DATE_SUB(CURDATE(),INTERVAL $days DAY) <= date AND server=$serverName ";
     $query.="ORDER BY DATE DESC";
 
@@ -378,16 +384,19 @@
 
       $tableSLJ=new TBL_table();
       $tableSLJ->setCaption("Last jobs for $serverName");
-      $tableSLJ->setColumns(array('date', 'title', 'printer', 'user', 'total'));
+      $tableSLJ->setColumns(array('Data', 'Título', 'Impressora', 'Usuário', 'IP', 'Cópias', 'Total Páginas'));
 
       global $jas_userStatsPage;
       global $jas_printerStatsPage;
+			global $jas_hostStatsPage;
 
       while ($row=mysql_fetch_assoc($result)){
         if (isset($jas_userStatsPage))
           $row['user']="<a href=\"".$jas_userStatsPage.$row['user']."\">".$row['user']."</a>";
         if (isset($jas_printerStatsPage))
           $row['printer']="<a href=\"".$jas_printerStatsPage.$row['printer']."\">".$row['printer']."</a>";
+				if (isset($jas_hostStatsPage))
+          $row['host']="<a href=\"".$jas_hostStatsPage.$row['host']."\">".$row['host']."</a>";
         $tableSLJ->addRow($row);
       }
 
@@ -423,7 +432,7 @@
     $dpt=($dpt)?DB_escape_string($dpt, true):0;
 
     // Build the query
-    $query="SELECT host, SUM(copies*pages) as total FROM jobs_log ";
+    $query="SELECT host, SUM(pages) as total FROM jobs_log ";
     $query.=($printerName)?"WHERE printer=$printerName ":"";
     // For $dpt, let's give up for now, we need to manage user groups...
     // That'll be in a later version :P !
@@ -478,7 +487,7 @@
     $dpt=($dpt)?DB_escape_string($dpt, true):0;
 
     // Build the query
-    $query="SELECT user, SUM(copies*pages) as total FROM jobs_log ";
+    $query="SELECT user, SUM(pages) as total FROM jobs_log ";
     $query.=($printerName)?"WHERE printer=$printerName ":"";
     // For $dpt, let's give up for now, we need to manage user groups...
     // That'll be in a later version :P !
@@ -535,7 +544,7 @@
     $dpt=($dpt)?DB_escape_string($dpt, true):0;
 
     // Build the query
-    $query="SELECT printer,SUM(copies*pages) as total FROM jobs_log ";
+    $query="SELECT printer,SUM(pages) as total FROM jobs_log ";
     // For $dpt, let's give up for now, we need to manage user groups...
     // That'll be in a later version :P !
     $query.="GROUP BY printer ORDER BY total DESC LIMIT $count";
@@ -581,7 +590,7 @@
     $count=DB_escape_string($count, true);
 
     // Build the query
-    $query="SELECT server,SUM(copies*pages) as total FROM jobs_log ";
+    $query="SELECT server,SUM(pages) as total FROM jobs_log ";
     $query.="GROUP BY server ORDER BY total DESC LIMIT $count";
 
     if($result=DB_query($query)){ //Assignment !
@@ -589,7 +598,7 @@
 
       $tableSR=new TBL_table();
       $tableSR->setCaption("server rankings");
-      $tableSR->setColumns(array('server', 'total'));
+      $tableSR->setColumns(array('Servidor', 'Total'));
 
       global $jas_serverStatsPage;
 

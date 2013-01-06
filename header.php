@@ -43,6 +43,8 @@
 				$(".header").click(function(){
 					window.location="index.php";
 					});
+				$("table tbody tr:nth-child(even)").addClass("changecolor");
+					
 			});
 		</script>
   </head>
