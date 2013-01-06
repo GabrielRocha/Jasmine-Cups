@@ -7,7 +7,7 @@ O JASmine mostra as seguintes informações:
  * Usuários;
  * Impressoras;
  * Servidores.
-Nessa versão o JASmine tem a opção de listar o ip do usuário e mostrar qual foi o ip que mais imprimiu através do servidor.
+Nessa versão o JASmine tem a opção de listar o ip dos usuários e mostrar qual foi o ip que mais imprimiu.
 
 ==========================
 Instalação
