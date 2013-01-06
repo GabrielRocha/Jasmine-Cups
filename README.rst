@@ -3,11 +3,14 @@ JASmine WEB - CUPS - IP
 ===========================
 
 Esse trabalho foi realizado com a intenção de adicionar uma funcionabilidade ao sistema já existente JASmine, que gera relatórios a partir das impressoras instaladas no CUPS.
-O JASmine mostra as seguintes informações:
+
+O JASmine na versão anterior mostra as seguintes informações:
  * Usuários;
  * Impressoras;
  * Servidores.
+
 Nessa versão o JASmine tem a opção de listar o ip dos usuários e mostrar qual foi o ip que mais imprimiu.
+
 Versão atual:
  * Usuários;
  * Impressoras;
