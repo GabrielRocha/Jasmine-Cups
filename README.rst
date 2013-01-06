@@ -1,56 +1,20 @@
 ===========================
-Compilando os arquivos .tex
+JASmine WEB - CUPS - IP
 ===========================
 
-Este trabalho de conclusão de curso foi feito utilizando LaTeX [#]_ , seguindo (ou pelo menos tentando) as orientações gerais para construção de trabalhos monográficos do Instituto Federal Fluminense (IFF).
+Esse trabalho foi realizado com a intenção de adicionar uma funcionabilidade ao sistema já existente JASmine, que gera relatórios a partir das impressoras instaladas no CUPS.
+O JASmine mostra as seguintes informações:
+ * Usuários;
+ * Impressoras;
+ * Servidores.
+Nessa versão o JASmine tem a opção de listar o ip do usuário e mostrar qual foi o ip que mais imprimiu através do servidor.
 
-Pré requisitos
-==============
+==========================
+Instalação
+==========================
 
-Para compilar os arquivos .tex é necessário a instalação do pacote *abntex*. Para isso, basta executar o seguinte comando em um terminal:
+1 - Executar os processos de instalação do JASmine como é demostrado no link http://jasmine.berlios.de/dokuwiki/doku.php?id=documentation:0.0.3:install
 
-	$ sudo apt-get install abntex
+2 - Copiar os arquivos do jasmine-cups no diretório onde estão os arquivos que são publicados pelo servidor web instalado no servidor;
 
-Gerando arquivos .pdf a partir dos arquivos .tex
-================================================
-
-Dica retirada do GitHub do Quali-Ágil [#]_. O *latexmk* [#]_ é um script que agiliza o processo de criação do arquivo .pdf de um determinado arquivo .tex pois não se torna necessário executar os comandos *latex* e *bibtex* repetida vezes.
-
-
-Instalando o *latexmk*
-======================
-
-As únicas dependências do *latexmk* são o *TeX*, *LaTeX* e *Perl*.
-
-Para instalar o script, bastar executar em um terminal:
-
-    $ sudo cp latexmk.pl /usr/bin/latexmk
-    
-    $ sudo chmod a+rx /usr/bin/latexmk
-    
-Usando o *latexmk*
-==================
-
-Para gerar um .pdf a partir de um .tex utilizando o script, basta apenas executar em um terminal:
-
-    $ latexmk -pdf nome_do_arquivo.tex
-
-Latex - Abntex no Macos
-=======================
-
-Faça download da última versão estável do abntex [#]_.
- 
-Download do MacTex [#]_
-
-Instale o Mactex e depois unzip os arquivos do abntex na pasta ~/Library/texmf/tex/latex. Crie se ela na existir.
-
-.. [#] http://www.latex-project.org/
-    
-.. [#] http://github.com/qualiagil
-
-.. [#] http://www.phys.psu.edu/~collins/software/latexmk-jcc/
-
-.. [#] http://codigolivre.org.br/frs/?group_id=46
-
-.. [#] http://www.tug.org/mactex/2011/
-
+3 - Copiar o arquivos jasmine que se encontra no diretório backend na pasta lib do cups(/usr/lib/cups/backend);
