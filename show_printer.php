@@ -54,7 +54,36 @@
        echo "        Erro. Favor entrar em contato com a DTIC.\n";
 ?>
       </p>
-      <h3>Histórico dos últimos 30 dias</h3>
-      <?=($printerJobHistory)?$printerJobHistory:"<p>Erro. Favor entrar em contato com a DTIC</p>"?>
+      <h3>Histórico</h3>
+      <table id="list"><tr><td/></tr></table>
+			<div id="pager"></div>      
+<script type="text/javascript">
+$(function(){
+	$("#list").jqGrid({
+  	url:'jqgrid.php?printer="<?php echo $printer; ?>"',
+  	datatype:'json',
+  	mtype: 'GET',
+  	colNames:['Data','Título', 'IP', 'Servidor', 'Usuário','Cópias','Total Páginas'],
+  	colModel :[
+    	{name:'Data', index:'date', width:155,sortable:false, align:'center'},
+    	{name:'Título', index:'title', width:190,sortable:false, align:'center'},
+    	{name:'IP', index:'host', width:180, align:'center',sortable:false},
+    	{name:'Servidor', index:'server', width:180, align:'center',sortable:false},
+    	{name:'Usuário', index:'usuario', width:180, align:'center',sortable:false},
+    	{name:'Cópias', index:'copies', width:80, align:'center',sortable:false},
+    	{name:'Total Páginas', index:'pages', width:100, sortable:false,align:'center'}
+  		],
+  		pager: '#pager',
+  		rowNum:10,
+  		rowList:[10,20,30,1000],
+  		sortname: 'date',
+  		sortorder: 'desc',
+			height: '1000%',
+  		viewrecords: true,
+  		gridview: true,
+  		caption: 'Relatório'
+			}).navGrid("#pager",{edit:false,add:false,del:false,search:false});
+		});
+</script>
     <!-- End printer stats -->
 

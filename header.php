@@ -31,13 +31,17 @@
 <![endif]-->
     <style type="text/css">
       <!--
-      @import "style.css" screen;
-      @import "style_printer.css" print;
+      @import "css/style.css" screen;
+      @import "css/style_printer.css" print;
       -->
     </style>
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" media="screen" href="css/ui-lightness/jquery-ui-1.7.3.custom.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
 		<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+		<script src="js/locale/grid.locale-pt-br.js" type="text/javascript"></script>
+		<script src="js/jquery.jqGrid.src.js" type="text/javascript"></script>
 		<script type='text/javascript'>
 			$(function(){
 				$(".header").click(function(){

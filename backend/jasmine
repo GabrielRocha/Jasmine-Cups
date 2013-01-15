@@ -169,7 +169,6 @@ sub count_pages {
 
   # Get the name of the file to analyse
   my $doc=shift;  
-  qx{cat $doc > /home/user/log/jasmine};
   
   # If pdl_analyser.py isn't installed, or the path incorrect,
   # or not executable, warn the admin !
@@ -199,8 +198,7 @@ sub count_pages {
   my $analyse_command="$path_to_python $path_to_pkpgcounter $doc";
 
   # Launch the command !
-  #my $total_pages=qx{$analyse_command 2> /dev/null};
-  my $total_pages=qx{$analyse_command 2> /home/user/log/log.jasmine};
+  my $total_pages=qx{$analyse_command 2> /dev/null};
 
   # Check return code.
   my $rcode = $?;
@@ -458,7 +456,8 @@ else {
     $host =~ s/::ffff://g;
     
     #Change the title of network file printed
-    $title =~ s/smbprn.* Remote Downlevel Document //g;
+    $title =~ s/smbprn.?\d{8} Remote Downlevel Document //g;
+    $title =~ s/smbprn.?\d{8}//g;
     
     # Escape the fields to be inserted
     my @sqlArgs=map($dbh->quote($_), ($job_id, $printer,$user, $hostname, $title, $copies, $pg_count, $options, $doc, $host));
