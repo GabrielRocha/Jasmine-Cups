@@ -38,7 +38,7 @@
   $userTotalPages=jas_getUserTotalPages($user);
   
   // Get user's last month history
-  $userJobHistory=jas_getUserLastJobs($user, 30)
+  //$userJobHistory=jas_getUserLastJobs($user, 30)
   
 ?>
     <!-- Begin user stats -->
@@ -56,35 +56,43 @@
 ?>	  
       </p>
       <h3>Histórico</h3>
-			<table id="list"><tr><td/></tr></table>
-			<div id="pager"></div>      
+	<div id="jqgrid" style="width=100%">
+		<table id="list"><tr><td/></tr></table>
+		<div id="pager"></div>
+	</div>      
 <script type="text/javascript">
 $(function(){
 	$("#list").jqGrid({
-  	url:'jqgrid.php?user="user"',
+  	url:'jqgrid.php?user="<?php echo $user; ?>"',
   	datatype:'json',
   	mtype: 'GET',
   	colNames:['Data','Título', 'IP', 'Servidor', 'Impressora','Cópias','Total Páginas'],
   	colModel :[
-    	{name:'Data', index:'date', width:155,sortable:false, align:'center'},
-    	{name:'Título', index:'title', width:190,sortable:false, align:'center'},
-    	{name:'IP', index:'host', width:180, align:'center',sortable:false},
-    	{name:'Servidor', index:'server', width:180, align:'center',sortable:false},
-    	{name:'Impressora', index:'printer', width:180, align:'center',sortable:false},
+    	{name:'Data', index:'date',width:120,sortable:false, align:'center'},
+    	{name:'Título', index:'title',width:190,sortable:false, align:'center'},
+    	{name:'IP', index:'host', width:100, align:'center',sortable:false},
+    	{name:'Servidor', index:'server', width:120, align:'center',sortable:false},
+    	{name:'Impressora', index:'printer', width:120, align:'center',sortable:false},
     	{name:'Cópias', index:'copies', width:80, align:'center',sortable:false},
     	{name:'Total Páginas', index:'pages', width:100, sortable:false,align:'center'}
   		],
   		pager: '#pager',
   		rowNum:10,
-  		rowList:[10,20,30,1000],
+  		rowList:[10,20,30,100],
   		sortname: 'date',
   		sortorder: 'desc',
-			height: '1000%',
+		height: '100%',
+		autowidth: true,
   		viewrecords: true,
   		gridview: true,
   		caption: 'Relatório'
 			}).navGrid("#pager",{edit:false,add:false,del:false,search:false});
-		});
+		
+	//$(window).bind('resize', function(){
+          //   $('#pager').setGridWidth(0);
+        //resize to our container's width
+            // $('#pager').setGridWidth($('#jqgrid').width());
+    	//}).trigger('resize');
+});
 </script>
     <!-- End user stats -->
-

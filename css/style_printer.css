@@ -76,7 +76,7 @@ div.report_page p{
   padding-left: 25px;
 }
 table{
-  border: solid 1px #66CC99;
+  
   margin-left: auto;
   margin-right: auto;
   width: 75%;
@@ -91,7 +91,7 @@ caption{
   padding-left: 1em;
 }
 th {
-  border: 1px solid #66CC99;
+  
   background: #66CC99;
   color: #FFFFFF;
   width: 1em;
@@ -103,7 +103,7 @@ th + th{
   width: auto;
 }
 td {
-  border: solid 1px #66CC99;
+ 
   text-align: left;
   padding: 2px;
   padding-left: 5px;
@@ -613,7 +613,7 @@ tr.ui-search-toolbar select {margin: 1px 0px 0px 0px}
 .ui-jqgrid tr.footrow-ltr td {text-align:left;border-right-width: 1px; border-right-color: inherit; border-right-style: solid;}
 .ui-jqgrid tr.footrow-rtl td {text-align:right;border-left-width: 1px; border-left-color: inherit; border-left-style: solid;}
 /* Pager*/
-.ui-jqgrid .ui-jqgrid-pager { border-left: 0px none !important;border-right: 0px none !important; border-bottom: 0px none !important; margin: 0px !important; padding: 0px !important; position: relative; height: 25px;white-space: nowrap;overflow: hidden;  display:none;}
+.ui-jqgrid .ui-jqgrid-pager { border-left: 0px none !important;border-right: 0px none !important; border-bottom: 0px none !important; margin: 0px !important; padding: 0px !important; position: relative; height: 25px;white-space: nowrap;overflow: hidden;  }
 .ui-jqgrid .ui-pager-control {position: relative;}
 .ui-jqgrid .ui-pg-table {position: relative; padding-bottom:2px; width:auto; margin: 0em;}
 .ui-jqgrid .ui-pg-table td {font-weight:normal; vertical-align:middle; padding:1px;}

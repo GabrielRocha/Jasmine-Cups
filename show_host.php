@@ -79,7 +79,8 @@ $(function(){
   		rowList:[10,20,30,1000],
   		sortname: 'date',
   		sortorder: 'desc',
-			height: '1000%',
+		height: '100%',
+		autowidth: true,
   		viewrecords: true,
   		gridview: true,
   		caption: 'Relatório'

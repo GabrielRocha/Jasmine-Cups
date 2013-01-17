@@ -17,6 +17,7 @@ mysql_select_db($DB_db) or die("Error connecting to db.");
 
 if (isset($user)){
 	$result = mysql_query("SELECT COUNT(*) AS count FROM jobs_log WHERE user=$user");
+	//echo $user;
 	make_info_pages_jqgrid();
 	$SQL = "Select id,date,title, host, server, printer,copies,pages FROM jobs_log WHERE user=$user ORDER BY $sidx $sord LIMIT $start,$limit";
 	$result = mysql_query( $SQL ) or die("Couldn't execute query.".mysql_error());
@@ -83,6 +84,6 @@ function make_info_pages_jqgrid(){
 	
 	$response->page = $page;
 	$response->total = $total_pages;
-  $response->records = $count;
+  	$response->records = $count;
 	}	
 ?>
