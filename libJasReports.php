@@ -56,8 +56,8 @@
       return false;
     }
     // Clean the input variable
-    $userName=DB_escape_string($host, true);
-    $query="SELECT SUM(pages) as total FROM jobs_log WHERE host='$host'";
+    $host=DB_escape_string($host, true);
+    $query="SELECT SUM(pages) as total FROM jobs_log WHERE host=$host";
     if ($result=DB_query($query)){ //Assignment !
       $row=mysql_fetch_row($result);
       mysql_free_result($result);
@@ -267,11 +267,11 @@
       return false;
     }
     // Clean the input variables and prepare query
-    $userName=DB_escape_string($host, true);
+    $host=DB_escape_string($host, true);
     $days=DB_escape_string($days, true);
 
     $query="SELECT date, user, title, server, printer, copies, pages FROM jobs_log ";
-    $query.="WHERE DATE_SUB(CURDATE(),INTERVAL $days DAY) <= date AND host='$host'";
+    $query.="WHERE DATE_SUB(CURDATE(),INTERVAL $days DAY) <= date AND host=$host";
 
     if (!empty($printerName)){
       $printerName=DB_escape_string($printerName, true);
@@ -695,4 +695,14 @@
       return false;
     }
   }
+
+function ValidInput($string){
+	if (preg_match("/^[a-zA-Z0-9.]*$/",$string)){
+		return $string;
+	}else{
+		return 0;
+	}
+		
+	
+}
 ?>

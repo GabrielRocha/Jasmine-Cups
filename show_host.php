@@ -30,7 +30,9 @@
   DB_select($DB_db);
   
   // Get the hostname
-  $host=$_GET['host'];
+  $host=ValidInput($_GET['host']);
+	
+	
   // Escape the string for later display
   $hostDisplayName=htmlentities($host);
   
@@ -38,7 +40,7 @@
   $hostTotalPages=jas_getHostTotalPages($host);
   
   // Get host's last month history
-  $hostJobHistory=jas_getHostLastJobs($host, 30)
+  //$hostJobHistory=jas_getHostLastJobs($host, 30)
   
 ?>
     <!-- Begin host stats -->
@@ -61,7 +63,7 @@
 <script type="text/javascript">
 $(function(){
 	$("#list").jqGrid({
-  	url:'jqgrid.php?host="<?php echo $host; ?>"',
+  	url:'jqgrid.php?host=<?php echo $host; ?>',
   	datatype:'json',
   	mtype: 'GET',
   	colNames:['Data','Título', 'Impressora', 'Servidor', 'Usuário','Cópias','Total Páginas'],

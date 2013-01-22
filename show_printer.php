@@ -30,7 +30,7 @@
   DB_select($DB_db);
 
   // Get the printer name
-  $printer=$_GET['printer'];
+  $printer=ValidInput($_GET['printer']);
   // Escape the string for later display
   $printerDisplayName=htmlentities($printer);
   
@@ -38,7 +38,7 @@
   $printerTotalPages=jas_getPrinterTotalPages($printer);
   
   // Get printer's last month history
-  $printerJobHistory=jas_getPrinterLastJobs($printer, 30);
+  //$printerJobHistory=jas_getPrinterLastJobs($printer, 30);
 ?>
     <!-- Begin printer stats -->
       <h2>Status da impressora "<?php echo $printerDisplayName; ?>"</h2>
@@ -60,7 +60,7 @@
 <script type="text/javascript">
 $(function(){
 	$("#list").jqGrid({
-  	url:'jqgrid.php?printer="<?php echo $printer; ?>"',
+  	url:'jqgrid.php?printer=<?php echo $printer; ?>',
   	datatype:'json',
   	mtype: 'GET',
   	colNames:['Data','Título', 'IP', 'Servidor', 'Usuário','Cópias','Total Páginas'],

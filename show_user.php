@@ -30,7 +30,7 @@
   DB_select($DB_db);
   
   // Get the username
-  $user=$_GET['user'];
+  $user=ValidInput($_GET['user']);
   // Escape the string for later display
   $userDisplayName=htmlentities($user);
   
@@ -63,7 +63,7 @@
 <script type="text/javascript">
 $(function(){
 	$("#list").jqGrid({
-  	url:'jqgrid.php?user="<?php echo $user; ?>"',
+  	url:"jqgrid.php?user=<?php echo $user; ?>",
   	datatype:'json',
   	mtype: 'GET',
   	colNames:['Data','Título', 'IP', 'Servidor', 'Impressora','Cópias','Total Páginas'],
@@ -79,8 +79,8 @@ $(function(){
   		pager: '#pager',
   		rowNum:10,
   		rowList:[10,20,30,100],
-  		sortname: 'date',
-  		sortorder: 'desc',
+  		sortname: "date",
+  		sortorder: "desc",
 		height: '100%',
 		autowidth: true,
   		viewrecords: true,
