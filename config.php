@@ -24,8 +24,8 @@
   $DEFAULT_STARTPAGE="main_page";
 
   // Database vars
-  $DB_host="172.16.214.189";
+  $DB_host="";
   $DB_login="jasmine";
-  $DB_pass="jasmine123";
+  $DB_pass="";
   $DB_db="jasmine";
 ?>
