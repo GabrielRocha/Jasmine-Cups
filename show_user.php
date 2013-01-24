@@ -79,8 +79,6 @@ $(function(){
   		pager: '#pager',
   		rowNum:10,
   		rowList:[10,20,30,100],
-  		sortname: "date",
-  		sortorder: "desc",
 		height: '100%',
 		autowidth: true,
   		viewrecords: true,

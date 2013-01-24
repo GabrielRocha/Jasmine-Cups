@@ -28,4 +28,5 @@
   $DB_login="jasmine";
   $DB_pass="";
   $DB_db="jasmine";
+  $DB_Driver = "mysql;
 ?>

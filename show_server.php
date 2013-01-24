@@ -38,7 +38,7 @@
   $serverTotalPages=jas_getServerTotalPages($server);
   
   // Get server's last month history
- // $serverJobHistory=jas_getServerLastJobs($server, 30);
+  $serverJobHistory=jas_getServerLastJobs($server, 30);
 ?>
     <!-- Begin server stats -->
       <h2>Stats for server "<?php echo $serverDisplayName; ?>"</h2>

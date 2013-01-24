@@ -10,7 +10,8 @@ $user = $_GET['user'];
 $printer = $_GET['printer'];
 $host = $_GET["host"];
 
-
+$column_order = "date";
+$order = "desc";
 
 if(!$sidx) $sidx =1;
 //$db = mysql_connect($DB_host, $DB_login, $DB_pass) or die("Connection Error: " . mysql_error());
@@ -31,10 +32,10 @@ if (isset($user)){
 	$result = $dbh->prepare("SELECT COUNT(*) AS count FROM jobs_log WHERE user=:user");
 	$result->bindValue(':user', $user);
 	make_info_pages_jqgrid();
-	$result = $dbh->prepare("Select id,date,title, host, server, printer,copies,pages FROM jobs_log WHERE user=:user ORDER BY :sidx :sord LIMIT $start,$limit");
+	$result = $dbh->prepare("Select id,date,title, host, server, printer,copies,pages FROM jobs_log WHERE user=:user ORDER BY $column_order $order LIMIT $start,$limit");
 	$result->bindValue(':user', $user);
-	$result->bindValue(':sidx', $sidx);
-	$result->bindValue(':sord', $sord);
+	// $result->bindValue(':sidx', $sidx);
+	// $result->bindValue(':sord', $sord);
 	if ($result->execute()) {
 		$i=0;
 		foreach($result as $row) {
@@ -49,10 +50,10 @@ if (isset($user)){
 	$result = $dbh->prepare("SELECT COUNT(*) AS count FROM jobs_log WHERE printer=:printer");
 	$result->bindValue(':printer', $printer);
 	make_info_pages_jqgrid();
-	$result = $dbh->prepare("Select id,date,title, host, server, user,copies,pages FROM jobs_log WHERE printer=:printer ORDER BY :sidx :sord LIMIT $start,$limit");
+	$result = $dbh->prepare("Select id,date,title, host, server, user,copies,pages FROM jobs_log WHERE printer=:printer ORDER BY $column_order $order LIMIT $start,$limit");
 	$result->bindValue(':printer', $printer);
-	$result->bindValue(':sidx', $sidx);
-	$result->bindValue(':sord', $sord);
+	// $result->bindValue(':sidx', $sidx);
+	// $result->bindValue(':sord', $sord);
 	if ($result->execute()) {
 		$i=0;
 		foreach($result as $row) {
@@ -67,10 +68,10 @@ if (isset($user)){
 	$result = $dbh->prepare("SELECT COUNT(*) AS count FROM jobs_log WHERE host=:host");
 	$result->bindValue(':host', $host);
 	make_info_pages_jqgrid();
-	$result = $dbh->prepare("Select id,date,title, printer, server, user,copies,pages FROM jobs_log WHERE host=:host  ORDER BY :sidx :sord 	LIMIT $start, $limit");
+	$result = $dbh->prepare("Select id,date,title, printer, server, user,copies,pages FROM jobs_log WHERE host=:host  ORDER BY $column_order $order 	LIMIT $start, $limit");
 	$result->bindValue(':host', $host);
-	$result->bindValue(':sidx', $sidx);
-	$result->bindValue(':sord', $sord);
+	// $result->bindValue(":sidx", $sidx,  PDO::PARAM_STR);
+	// $result->bindValue(':sord', $sord, PDO::PARAM_STR);
 	if ($result->execute()) {
 		$i=0;
 	 	foreach($result as $row) {
