@@ -462,7 +462,7 @@ else {
     # Escape the fields to be inserted
     my @sqlArgs=map($dbh->quote($_), ($job_id, $printer,$user, $hostname, $title, $copies, $pg_count, $options, $doc, $host));
 		
-    my $query="INSERT INTO jobs_log (date, job_id, printer, user, server, title, copies,pages, options, doc, host)";
+    my $query="INSERT INTO jobs_log (printing_date, job_id, printer, user_id, server, title, copies,pages, options, doc, host)";
     $query.=" VALUES (now(), ".join (", ", @sqlArgs).")";
     $dbh->do($query) or do{
       # If the query fails, log it, and set the failure flag.

@@ -701,8 +701,6 @@ function ValidInput($string){
 		return $string;
 	}else{
 		return 0;
-	}
-		
-	
+	}	
 }
 ?>
