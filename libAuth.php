@@ -1,4 +1,4 @@
-<?php
+<?php 
 /* Terreau, a set of various PHP libraries.
  Copyright (C) 2005-2006  Nayco.
 
