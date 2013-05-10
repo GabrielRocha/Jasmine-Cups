@@ -7,10 +7,9 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = $.jgrid || {};
-$.extend($.jgrid,{
+$.jgrid = {
 	defaults : {
-		recordtext: "Ver {0} - {1} of {2}",
+		recordtext: "{0} a {1} de {2}",
 	    emptyrecords: "Nenhum registro para visualizar",
 		loadtext: "Carregando...",
 		pgtext : "Página {0} de {1}"
@@ -18,8 +17,8 @@ $.extend($.jgrid,{
 	search : {
 	    caption: "Procurar...",
 	    Find: "Procurar",
-	    Reset: "Resetar",
-	    odata : ['equal', 'not equal', 'less', 'less or equal','greater','greater or equal', 'begins with','does not begin with','is in','is not in','ends with','does not end with','contains','does not contain'],
+	    Reset: "Limpar",
+	    odata : ['igual', 'diferente', 'menor', 'menor ou igual','maior','maior ou igual', 'começa com','não começa com','está em','não está em','termina com','não termina com','contém','não contém'],
 	    groupOps: [	{ op: "AND", text: "all" },	{ op: "OR",  text: "any" }	],
 		matchText: " iguala",
 		rulesText: " regras"
@@ -54,8 +53,8 @@ $.extend($.jgrid,{
 	    bClose: "Fechar"
 	},
 	del : {
-    caption: "Apagar",
-	    msg: "Apagar registros selecionado(s)?",
+        caption: "Apagar",
+	    msg: "Apagar registros selecionado(s)?",        
 	    bSubmit: "Apagar",
 	    bCancel: "Cancelar"
 	},
@@ -69,7 +68,7 @@ $.extend($.jgrid,{
 	    searchtext: " ",
 	    searchtitle: "Procurar registros",
 	    refreshtext: "",
-	    refreshtitle: "Recarrgando Tabela",
+	    refreshtitle: "Recarregar Tabela",
 	    alertcap: "Aviso",
 	    alerttext: "Por favor, selecione um registro",
 		viewtext: "",
@@ -82,7 +81,7 @@ $.extend($.jgrid,{
 	},
 	errors : {
 		errcap : "Erro",
-		nourl : "Nenhuma URL defenida",
+		nourl : "Nenhuma URL definida",
 		norecords: "Sem registros para exibir",
 	    model : "Comprimento de colNames <> colModel!"
 	},
@@ -124,5 +123,5 @@ $.extend($.jgrid,{
 	    checkbox : {disabled:true},
 		idName : 'id'
 	}
-});
+};
 })(jQuery);

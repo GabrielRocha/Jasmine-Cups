@@ -654,6 +654,7 @@ $.fn.jqGrid = function( pin ) {
 			rowTotal : null,
 			records: 0,
 			pager: "",
+			total: 0,
 			pgbuttons: true,
 			pginput: true,
 			colModel: [],
@@ -1308,6 +1309,7 @@ $.fn.jqGrid = function( pin ) {
 			}
 			var ir=0,v,i,j,f=[],F,cur,gi=ts.p.multiselect?1:0,si=ts.p.subGrid?1:0,ni=ts.p.rownumbers===true?1:0,len,drows,idn,rd={}, fpos, idr,rowData=[],cn=(ts.p.altRows === true) ? " "+ts.p.altclass:"",cn1,lp;
 			ts.p.page = $.jgrid.getAccessor(data,dReader.page) || 0;
+			ts.p.total = $.jgrid.getAccessor(data,dReader.sumtotalpages) || 0;
 			lp = $.jgrid.getAccessor(data,dReader.total);
 			ts.p.lastpage = lp === undefined ? 1 : lp;
 			ts.p.records = $.jgrid.getAccessor(data,dReader.records) || 0;
@@ -1657,7 +1659,7 @@ $.fn.jqGrid = function( pin ) {
 							to = $.fmatter.util.NumberFormat(to,fmt);
 							tot = $.fmatter.util.NumberFormat(tot,fmt);
 						}
-						$(".ui-paging-info",pgboxes).html($.jgrid.format(ts.p.recordtext,from,to,tot));
+						$(".ui-paging-info",pgboxes).html("Total de Páginas Impressas no Período: "+ts.p.total+" / Impressões : "+$.jgrid.format(ts.p.recordtext,from,to,tot));
 					}
 				}
 				if(ts.p.pgbuttons===true) {
@@ -1895,7 +1897,7 @@ $.fn.jqGrid = function( pin ) {
 			} else if (pginp !== "") { pgl += pginp; }
 			if(dir=="ltr") { pgl += str; }
 			pgl += "</tr></tbody></table>";
-			if(ts.p.viewrecords===true) {$("td#"+pgid+"_"+ts.p.recordpos,"#"+pgcnt).append("<div dir='"+dir+"' style='text-align:"+ts.p.recordpos+"' class='ui-paging-info'></div>");}
+			if(ts.p.viewrecords===true) {$("td#"+pgid+"_"+ts.p.recordpos,"#"+pgcnt).append("<div dir='"+dir+"' style='text-align:"+ts.p.recordpos+"' class='ui-paging-info'>	</div>");}
 			$("td#"+pgid+"_"+ts.p.pagerpos,"#"+pgcnt).append(pgl);
 			tdw = $(".ui-jqgrid").css("font-size") || "11px";
 			$(document.body).append("<div id='testpg' class='ui-jqgrid ui-widget ui-widget-content' style='font-size:"+tdw+";visibility:hidden;' ></div>");
@@ -2155,6 +2157,7 @@ $.fn.jqGrid = function( pin ) {
 			subgrid: {root:"rows", row: "row", repeatitems: true, cell:"cell"}
 		}, ts.p.xmlReader);
 		ts.p.jsonReader = $.extend(true,{
+			sumtotalpages: "sumtotalpages",
 			root: "rows",
 			page: "page",
 			total: "total",

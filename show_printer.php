@@ -54,11 +54,20 @@
        echo "        Erro. Favor entrar em contato com a DTIC.\n";
 ?>
       </p>
+			<h3>Pesquisar</h3>
+			De: <input type="text" id="data_inicio" name="data_inicio">
+			Até: <input type="text" id="data_fim" name="data_fim">
+			<p>
+				<input type="button" value="Pesquisar" id="pesquisar">
       <h3>Histórico</h3>
       <table id="list"><tr><td/></tr></table>
 			<div id="pager"></div>      
 <script type="text/javascript">
 $(function(){
+	$("#pesquisar").click(function(){
+		$("#list").jqGrid('setGridParam',{url:"jqgrid.php?printer=<?php echo $printer; ?>&data_inicio="+$("#data_inicio").val()+"&data_fim="+$("#data_fim").val()}).trigger("reloadGrid");
+	});
+	
 	$("#list").jqGrid({
   	url:'jqgrid.php?printer=<?php echo $printer; ?>',
   	datatype:'json',
@@ -75,14 +84,51 @@ $(function(){
   		],
   		pager: '#pager',
   		rowNum:10,
-  		rowList:[10,20,30,1000],  	
-		height: '100%',
-		autowidth: true,
+  		rowList:[10,20,30,100000000000],
+			height: '100%',
+			autowidth: true,
   		viewrecords: true,
   		gridview: true,
-  		caption: 'Relatório'
+  		caption: 'Relatório',
+			loadComplete: function() {
+			    $("option[value=100000000000]").text('All');
+			},
 			}).navGrid("#pager",{edit:false,add:false,del:false,search:false});
-		});
+	
+			$("#data_inicio").datepicker({
+				dateFormat: 'dd/mm/yy',
+				changeMonth: true,
+				changeYear: true,
+				showButtonPanel:true,
+				showOn: "both",
+				buttonImage: "images/calendario.jpg",
+				buttonImageOnly: true,
+				dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
+				dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+				dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+				monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+				monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
+			});
+			$("#data_fim").datepicker({
+				dateFormat: 'dd/mm/yy',
+				changeMonth: true,
+				changeYear: true,
+				showButtonPanel:true,
+				showOn: "both",
+				buttonImage: "images/calendario.jpg",
+				buttonImageOnly: true,
+				dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
+				dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+				dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+				monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+				monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
+			});
+
+			$(".ui-icon-refresh").click(function(){
+				$("#list").jqGrid('setGridParam',{url:"jqgrid.php?printer=<?php echo $printer; ?>"}).trigger("reloadGrid");	
+			});
+	
+});
 </script>
     <!-- End printer stats -->
 

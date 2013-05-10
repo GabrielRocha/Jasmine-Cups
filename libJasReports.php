@@ -697,10 +697,12 @@
   }
 
 function ValidInput($string){
-	if (preg_match("/^[a-zA-Z0-9.]*$/",$string)){
+	if (preg_match("/^[a-zA-Z0-9._-]+$/",$string)){
 		return $string;
 	}else{
 		return 0;
-	}	
+	}
+		
+	
 }
 ?>

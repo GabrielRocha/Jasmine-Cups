@@ -46,7 +46,7 @@
     <!-- Begin host stats -->
       <h2>Status do usuário "<?php echo $hostDisplayName; ?>"</h2>
       <p class="status">
-        <em>Aqui estão alguns status para a <strong><?php echo $hostDisplayName; ?></strong></em>
+        <em>Aqui estão algumas informações sobre o IP  <strong><?php echo $hostDisplayName; ?></strong></em>
       </p>
       <h3>Total de páginas</h3>
       <p>
@@ -57,35 +57,81 @@
     echo "        Erro. Favor entrar em contato com a DTIC.\n";
 ?>	  
       </p>
+			<h3>Pesquisar</h3>
+			De: <input type="text" id="data_inicio" name="data_inicio">
+			Até: <input type="text" id="data_fim" name="data_fim">
+			<p>
+				<input type="button" value="Pesquisar" id="pesquisar">
       <h3>Histórico</h3>
       <table id="list"><tr><td/></tr></table>
 			<div id="pager"></div>      
 <script type="text/javascript">
 $(function(){
+	
+	$("#pesquisar").click(function(){
+		$("#list").jqGrid('setGridParam',{url:"jqgrid.php?host=<?php echo $host; ?>&data_inicio="+$("#data_inicio").val()+"&data_fim="+$("#data_fim").val()}).trigger("reloadGrid");
+	});
+	
 	$("#list").jqGrid({
   	url:'jqgrid.php?host=<?php echo $host; ?>',
   	datatype:'json',
   	mtype: 'GET',
   	colNames:['Data','Título', 'Impressora', 'Servidor', 'Usuário','Cópias','Total Páginas'],
   	colModel :[
-    	{name:'Data', index:'date', width:155,sortable:false, align:'center'},
-    	{name:'Título', index:'title', width:190,sortable:false, align:'center'},
-    	{name:'Impressora', index:'host', width:180, align:'center',sortable:false},
-    	{name:'Servidor', index:'server', width:180, align:'center',sortable:false},
-    	{name:'Usuário', index:'usuario', width:180, align:'center',sortable:false},
-    	{name:'Cópias', index:'copies', width:80, align:'center',sortable:false},
-    	{name:'Total Páginas', index:'pages', width:100, sortable:false,align:'center'}
+    	{name:'Data', index:'date', width:155,sortable:false, align:'center', searchoptions: { sopt: ['eq', 'bw', 'cn']}},
+    	{name:'Título', index:'title', width:190,sortable:false, align:'center', searchoptions: { sopt: ['eq', 'bw', 'cn']}},
+    	{name:'Impressora', index:'host', width:180, align:'center',sortable:false,search: false},
+    	{name:'Servidor', index:'server', width:180, align:'center',sortable:false,search: false},
+    	{name:'Usuário', index:'usuario', width:180, align:'center',sortable:false, searchoptions: { sopt: ['eq', 'bw', 'cn']}},
+    	{name:'Cópias', index:'copies', width:80, align:'center',sortable:false,search: false},
+    	{name:'Total Páginas', index:'pages', width:100, sortable:false,align:'center',search: false}
   		],
   		pager: '#pager',
   		rowNum:10,
-  		rowList:[10,20,30,1000],
-		height: '100%',
-		autowidth: true,
+  		rowList:[10,20,30,100000000000],
+			height: '100%',
+			autowidth: true,
   		viewrecords: true,
   		gridview: true,
-  		caption: 'Relatório'
-			}).navGrid("#pager",{edit:false,add:false,del:false,search:false});
+  		caption: 'Relatório',
+			loadComplete: function() {
+			    $("option[value=100000000000]").text('All');
+			},
+			}).navGrid("#pager", { search: false, add: false, edit: false, view: false, del: false });
+			
+		$("#data_inicio").datepicker({
+			dateFormat: 'dd/mm/yy',
+			changeMonth: true,
+			changeYear: true,
+			showButtonPanel:true,
+			showOn: "both",
+			buttonImage: "images/calendario.jpg",
+			buttonImageOnly: true,
+			dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
+			dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+			dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+			monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+			monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
 		});
+		$("#data_fim").datepicker({
+			dateFormat: 'dd/mm/yy',
+			changeMonth: true,
+			changeYear: true,
+			showButtonPanel:true,
+			showOn: "both",
+			buttonImage: "images/calendario.jpg",
+			buttonImageOnly: true,
+			dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'],
+			dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+			dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+			monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+			monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
+		});
+		
+		$(".ui-icon-refresh").click(function(){
+			$("#list").jqGrid('setGridParam',{url:"jqgrid.php?host=<?php echo $host; ?>"}).trigger("reloadGrid");	
+		});
+});
 </script>
     <!-- End host stats -->
 

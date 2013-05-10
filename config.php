@@ -24,9 +24,9 @@
   $DEFAULT_STARTPAGE="main_page";
 
   // Database vars
-  $DB_host="";
+  $DB_host="localhost";
   $DB_login="jasmine";
   $DB_pass="";
   $DB_db="jasmine";
-  $DB_Driver = "mysql;
+	$DB_driver = "mysql";
 ?>

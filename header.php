@@ -39,8 +39,11 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" media="screen" href="css/ui-lightness/jquery-ui-1.7.3.custom.css" />
 		<link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
-		<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+		<!--<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>-->
+		<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
 		<script src="js/locale/grid.locale-pt-br.js" type="text/javascript"></script>
+		<script src="js/jquery-ui.js" type="text/javascript"></script>
+		<script src="js/jquery.layout.js" type="text/javascript"></script>
 		<script src="js/jquery.jqGrid.src.js" type="text/javascript"></script>
 		<script type='text/javascript'>
 			$(function(){

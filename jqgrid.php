@@ -7,8 +7,11 @@ $limit = (int)$_GET['rows'];
 $user = $_GET['user'];
 $printer = $_GET['printer'];
 $host = $_GET["host"];
+$data_inicio = $_GET["data_inicio"];
+$data_fim_array = explode("/",$_GET["data_fim"]);
+$data_fim  = date("d/m/Y",mktime (0, 0, 0, $data_fim_array[1]  , $data_fim_array[0]+1, $data_fim_array[2]));
 
-$column_order = "date";
+$column_order = "id";
 $order = "desc";
 
 $opcoes = array(
@@ -23,11 +26,11 @@ try {
 }
 
 if (isset($user)){
-	$result = $dbh->prepare("SELECT COUNT(*) AS count FROM jobs_log WHERE user=:user");
-	$result->bindValue(':user', $user);
-	make_info_pages_jqgrid();
-	$result = $dbh->prepare("Select id, DATE_FORMAT(date, '%d/%m/%Y %H:%i:%s') as date ,title, host, server, printer,copies,pages FROM jobs_log WHERE user=:user ORDER BY $column_order $order LIMIT $start,$limit");
-	$result->bindValue(':user', $user);
+	if(isset($data_inicio) and isset($data_fim)){
+		get_file_printed_by_date_and_user();
+	}else{
+		get_all_file_printed_by_user();
+	}
 	if ($result->execute()) {
 		$i=0;
 		foreach($result as $row) {
@@ -39,11 +42,11 @@ if (isset($user)){
 		}
 	}
 }else if(isset($printer)){
-	$result = $dbh->prepare("SELECT COUNT(*) AS count FROM jobs_log WHERE printer=:printer");
-	$result->bindValue(':printer', $printer);
-	make_info_pages_jqgrid();
-	$result = $dbh->prepare("Select id,DATE_FORMAT(date, '%d/%m/%Y %H:%i:%s') as date,title, host, server, user,copies,pages FROM jobs_log WHERE printer=:printer ORDER BY $column_order $order LIMIT $start,$limit");
-	$result->bindValue(':printer', $printer);
+	if(isset($data_inicio) and isset($data_fim)){
+		get_file_printed_by_date_and_printer();
+	}else{
+		get_all_file_printed_by_printer();
+	}
 	if ($result->execute()) {
 		$i=0;
 		foreach($result as $row) {
@@ -55,11 +58,11 @@ if (isset($user)){
 			}
 	}
 }else{
-	$result = $dbh->prepare("SELECT COUNT(*) AS count FROM jobs_log WHERE host=:host");
-	$result->bindValue(':host', $host);
-	make_info_pages_jqgrid();
-	$result = $dbh->prepare("Select id,DATE_FORMAT(date, '%d/%m/%Y %H:%i:%s') as date,title, printer, server, user,copies,pages FROM jobs_log WHERE host=:host  ORDER BY $column_order $order 	LIMIT $start, $limit");
-	$result->bindValue(':host', $host);
+	if(isset($data_inicio) and isset($data_fim)){
+		get_file_printed_by_date_and_host();
+	}else{
+		get_all_file_printed_by_hosts();
+	}	
 	if ($result->execute()) {
 		$i=0;
 	 	foreach($result as $row) {
@@ -70,6 +73,7 @@ if (isset($user)){
 			 	$i++;
 	  }
 	}
+
 }
 
 	// $result = mysql_query("SELECT COUNT(*) AS count FROM jobs_log WHERE host=$host");
@@ -94,10 +98,12 @@ function make_info_pages_jqgrid(){
 	global $response;
 	global $limit;
 	global $start;
+	
 
 	$result->execute();
 	$row = $result->fetch();
 	$count = $row['count'];
+	$totalpages = $row['totalpages'];
 	
 	if( $count > 0 && $limit > 0) {
               	$total_pages = ceil($count/$limit);
@@ -114,5 +120,114 @@ function make_info_pages_jqgrid(){
 	$response->page = $page;
 	$response->total = $total_pages;
   $response->records = $count;
-	}	
+	$response->sumtotalpages = $totalpages;
+}
+
+function get_all_file_printed_by_user(){
+	global $user;
+	global $result;
+	global $order;
+	global $column_order;
+	global $limit;
+	global $start;
+	global $dbh;
+	$result = $dbh->prepare("SELECT COUNT(*) AS count, SUM(pages) as totalpages FROM jobs_log WHERE user=:user");
+	$result->bindValue(':user', $user);
+	make_info_pages_jqgrid();
+	$result = $dbh->prepare("Select id, DATE_FORMAT(date, '%d/%m/%Y %H:%i:%s') as date ,title, host, server, printer,copies,pages FROM jobs_log WHERE user=:user ORDER BY $column_order $order LIMIT $start,$limit");
+	$result->bindValue(':user', $user);
+}
+
+function get_file_printed_by_date_and_user(){
+	global $user;
+	global $data_inicio;
+	global $data_fim;
+	global $result;
+	global $order;
+	global $column_order;
+	global $limit;
+	global $start;
+	global $dbh;
+	$result = $dbh->prepare("SELECT COUNT(*) AS count, SUM(pages) as totalpages FROM jobs_log WHERE user=:user and date BETWEEN STR_TO_DATE(:data_inicio,'%d/%m/%Y') and STR_TO_DATE(:data_fim,'%d/%m/%Y')");
+	$result->bindValue(':user', $user);
+	$result->bindValue(':data_inicio', $data_inicio);
+	$result->bindValue(':data_fim', $data_fim);
+	make_info_pages_jqgrid();
+	$result = $dbh->prepare("Select id,DATE_FORMAT(date, '%d/%m/%Y %H:%i:%s') as date,title, host, server, printer,copies,pages FROM jobs_log WHERE user=:user and date BETWEEN STR_TO_DATE(:data_inicio,'%d/%m/%Y') and STR_TO_DATE(:data_fim,'%d/%m/%Y')  ORDER BY $column_order $order 	LIMIT $start, $limit");
+	$result->bindValue(':user', $user);
+	$result->bindValue(':data_inicio', $data_inicio);
+	$result->bindValue(':data_fim', $data_fim);
+}
+
+function get_all_file_printed_by_printer(){
+	global $printer;
+	global $result;
+	global $order;
+	global $column_order;
+	global $limit;
+	global $start;
+	global $dbh;
+	$result = $dbh->prepare("SELECT COUNT(*) AS count, SUM(pages) as totalpages FROM jobs_log WHERE printer=:printer");
+	$result->bindValue(':printer', $printer);
+	make_info_pages_jqgrid();
+	$result = $dbh->prepare("Select id,DATE_FORMAT(date, '%d/%m/%Y %H:%i:%s') as date,title, host, server, user,copies,pages FROM jobs_log WHERE printer=:printer ORDER BY $column_order $order LIMIT $start, $limit");
+	$result->bindValue(':printer', $printer);
+}
+
+function get_file_printed_by_date_and_printer(){
+	global $printer;
+	global $data_inicio;
+	global $data_fim;
+	global $result;
+	global $order;
+	global $column_order;
+	global $limit;
+	global $start;
+	global $dbh;
+	$result = $dbh->prepare("SELECT COUNT(*) AS count, SUM(pages) as totalpages FROM jobs_log WHERE printer=:printer and date BETWEEN STR_TO_DATE(:data_inicio,'%d/%m/%Y') and STR_TO_DATE(:data_fim,'%d/%m/%Y')");
+	$result->bindValue(':printer', $printer);
+	$result->bindValue(':data_inicio', $data_inicio);
+	$result->bindValue(':data_fim', $data_fim);
+	make_info_pages_jqgrid();
+	$result = $dbh->prepare("Select id,DATE_FORMAT(date, '%d/%m/%Y %H:%i:%s') as date,title, host, server, user,copies,pages FROM jobs_log WHERE printer=:printer and date BETWEEN STR_TO_DATE(:data_inicio,'%d/%m/%Y') and STR_TO_DATE(:data_fim,'%d/%m/%Y')  ORDER BY $column_order $order 	LIMIT $start, $limit");
+	$result->bindValue(':printer', $printer);
+	$result->bindValue(':data_inicio', $data_inicio);
+	$result->bindValue(':data_fim', $data_fim);
+}
+
+function get_all_file_printed_by_hosts(){
+	global $host;
+	global $result;
+	global $order;
+	global $column_order;
+	global $limit;
+	global $start;
+	global $dbh;
+	$result = $dbh->prepare("SELECT COUNT(*) AS count, SUM(pages) as totalpages FROM jobs_log WHERE host=:host");
+	$result->bindValue(':host', $host);
+	make_info_pages_jqgrid();
+	$result = $dbh->prepare("Select id,DATE_FORMAT(date, '%d/%m/%Y %H:%i:%s') as date,title, printer, server, user,copies,pages FROM jobs_log WHERE host=:host ORDER BY $column_order $order LIMIT $start, $limit");
+	$result->bindValue(':host', $host);
+}
+
+function get_file_printed_by_date_and_host(){
+	global $host;
+	global $data_inicio;
+	global $data_fim;
+	global $result;
+	global $order;
+	global $column_order;
+	global $limit;
+	global $start;
+	global $dbh;
+	$result = $dbh->prepare("SELECT COUNT(*) AS count, SUM(pages) as totalpages FROM jobs_log WHERE host=:host and date BETWEEN STR_TO_DATE(:data_inicio,'%d/%m/%Y') and STR_TO_DATE(:data_fim,'%d/%m/%Y')");
+	$result->bindValue(':host', $host);
+	$result->bindValue(':data_inicio', $data_inicio);
+	$result->bindValue(':data_fim', $data_fim);
+	make_info_pages_jqgrid();
+	$result = $dbh->prepare("Select id,DATE_FORMAT(date, '%d/%m/%Y %H:%i:%s') as date,title, printer, server, user,copies,pages FROM jobs_log WHERE host=:host and date BETWEEN STR_TO_DATE(:data_inicio,'%d/%m/%Y') and STR_TO_DATE(:data_fim,'%d/%m/%Y')  ORDER BY $column_order $order 	LIMIT $start, $limit");
+	$result->bindValue(':host', $host);
+	$result->bindValue(':data_inicio', $data_inicio);
+	$result->bindValue(':data_fim', $data_fim);
+}
 ?>
