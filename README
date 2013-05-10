@@ -1,26 +1,46 @@
-====================================
- JASmine, print accounting for Cups
-     (c) Nayco
-====================================
+===========================
+JASmine WEB - CUPS - IP
+===========================
 
-This is JASmine version 0.0.3. This code is in early
-developpement state, so do not expect for miracles !
+Esse trabalho foi realizado com a intenção de adicionar uma funcionabilidade ao sistema já existente JASmine, que gera relatórios a partir das impressoras instaladas no CUPS.
 
-However, it already accounts prints jobs and stores
-the results to a MySQL database, and displays simple
-reports on a web page; but sometimes these results 
-may not be accurate, so do not use these reports
-for print billing !!!
+O JASmine na versão anterior mostra as seguintes informações:
+ * Usuários;
+ * Impressoras;
+ * Servidores.
 
-Anyway, feel free to report bugs, send comments or
-feature requests on the mailing lists. See
-  http://jasmine.berlios.de
-to know how to subscribe.
+Nessa versão o JASmine tem a opção de listar o ip dos usuários e mostrar qual foi o ip que mais imprimiu.
 
-Be sure to read the INSTALL file to setup correctly
-this software.
+Versão atual:
+ * Usuários;
+ * Impressoras;
+ * Servidores;
+ * IP.
 
-This software is FREE SOFTWARE, released under the
-terms of GNU GPL, read the LICENCE file for more info.
+==========================
+Instalação
+==========================
 
-Enjoy !
+1 - Executar os processos de instalação do JASmine como é demostrado no link http://jasmine.berlios.de/dokuwiki/doku.php?id=documentation:0.0.3:install
+
+2 - Editar o arquivo jasmine.sql antes de rodar o script
+
+CREATE TABLE `jobs_log` (
+  `id` mediumint(9) NOT NULL auto_increment,
+  `date` timestamp(14) NOT NULL,
+  `job_id` tinytext NOT NULL,
+  `printer` tinytext NOT NULL,
+  `user` tinytext NOT NULL,
+  `server` tinytext NOT NULL,
+  `title` tinytext NOT NULL,
+  `copies` smallint(6) NOT NULL default '0',
+  `pages` smallint(6) NOT NULL default '0',
+  `options` tinytext NOT NULL,
+  `doc` tinytext NOT NULL,
+  `host` tinytext NOT NULL,
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM COMMENT='Lists all the jobs successfully sent for printing';
+
+3 - Copiar os arquivos do jasmine-cups e colar no diretório onde estão os arquivos que são publicados pelo servidor web instalado no servidor;
+
+4 - Copiar o arquivo jasmine que se encontra no diretório backend e colar na pasta lib do cups(/usr/lib/cups/backend);
